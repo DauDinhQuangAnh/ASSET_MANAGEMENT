@@ -40,7 +40,9 @@ export default function LoginPage() {
     try {
       const res = await mockLogin(data.username, data.password);
       localStorage.setItem("token", res.token);
-      router.push("/");
+      setTimeout(() => {
+        router.push("/devices");
+      }, 100);
     } catch (err) {
       if (err instanceof Error) setError(err.message);
       else setError("Có lỗi xảy ra");
@@ -50,14 +52,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{
-        backgroundImage: "url('/anh_nen_dang_nhap/abc2.jpg')",
-      }}
-    >
+    <div className="min-h-screen flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: "url('/anh_nen_dang_nhap/abc2.jpg')" }}>
       <div className="bg-white bg-opacity-90 p-8 rounded shadow-md w-full max-w-sm">
-        {/* Đã xóa logo ở đây */}
         <h2 className="text-2xl font-bold mb-6 text-center">Đăng nhập</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
