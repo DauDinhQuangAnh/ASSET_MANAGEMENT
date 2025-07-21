@@ -62,7 +62,7 @@ export default function DashboardPage() {
 
         {/* Main content */}
         <main className="flex-1 bg-gray-100 p-6">
-          <div className="max-w-7xl mx-auto">
+          <div className="w-4/5 mx-auto">
             {/* Welcome Section */}
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-6 mb-6 text-white">
               <h2 className="text-2xl font-bold mb-2">Chào mừng đến với SHARP Device Management System</h2>

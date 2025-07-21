@@ -31,7 +31,7 @@ export default function Sidebar() {
       isActive: pathname === "/devices" 
     },
     // Các menu khác tạm thời disable
-    { id: "borrow", label: "Mượn trả", icon: "🛒", path: "#", isActive: false },
+    { id: "borrow", label: "Người dùng", icon: "🧑", path: "/users", isActive: pathname === "/users" },
     { id: "purchase", label: "Đề nghị mua sắm", icon: "📋", path: "#", isActive: false },
     { id: "search", label: "Tra cứu", icon: "🔍", path: "#", isActive: false },
     { id: "system", label: "Hệ thống", icon: "⚙️", path: "#", isActive: false },
