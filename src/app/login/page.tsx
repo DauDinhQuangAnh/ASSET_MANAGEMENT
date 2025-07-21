@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 // Schema validate với Yup
 const schema = yup.object().shape({
@@ -21,6 +20,8 @@ const mockLogin = async (username: string, password: string) => {
   throw new Error("Sai tên đăng nhập hoặc mật khẩu");
 };
 
+type LoginForm = { username: string; password: string };
+
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState("");
@@ -29,19 +30,20 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<LoginForm>({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: LoginForm) => {
     setError("");
     setLoading(true);
     try {
       const res = await mockLogin(data.username, data.password);
       localStorage.setItem("token", res.token);
       router.push("/");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      if (err instanceof Error) setError(err.message);
+      else setError("Có lỗi xảy ra");
     } finally {
       setLoading(false);
     }
