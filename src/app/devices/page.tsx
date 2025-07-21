@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 const fakeDevices = [
   {
     id: 1,
-    asset_code: "LAP001",
+    asset_code: "LAP0012",
     asset_name: "Laptop Dell XPS 13",
     category_id: 1, // 1: Laptop
     brand: "Dell",
