@@ -182,10 +182,10 @@ export default function UserManagementPage() {
             <div className="flex flex-row items-center justify-between mb-4 gap-2 w-full">
               <div className="flex-1 bg-white p-2.5 rounded-lg shadow mb-0 md:mb-0">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
-                  <input
-                    type="text"
-                    placeholder="Tìm kiếm theo tên, mã, email..."
-                    className="border p-2 rounded"
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm theo tên, mã, email..."
+                  className="border p-2 rounded"
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                   />
@@ -196,17 +196,17 @@ export default function UserManagementPage() {
                     ))}
                   </select>
                   <select className="border p-2 rounded" value={filterDept} onChange={e => setFilterDept(e.target.value)}>
-                    <option value="">Tất cả phòng ban</option>
+                  <option value="">Tất cả phòng ban</option>
                     {filteredDepartments.map(name => (
                       <option key={name} value={name}>{name}</option>
-                    ))}
-                  </select>
+                  ))}
+                </select>
                   <select className="border p-2 rounded" value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
-                    <option value="">Tất cả trạng thái</option>
-                    {Object.entries(statuses).map(([id, name]) => (
+                  <option value="">Tất cả trạng thái</option>
+                  {Object.entries(statuses).map(([id, name]) => (
                       <option key={id} value={name}>{name}</option>
-                    ))}
-                  </select>
+                  ))}
+                </select>
                 </div>
               </div>
               <div className="flex flex-row gap-2 ml-2">
@@ -429,35 +429,35 @@ export default function UserManagementPage() {
                 <div className="text-center py-8 text-blue-600 font-semibold">Đang tải danh sách người dùng...</div>
               ) : (
               <>
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã NV</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Họ tên</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vai trò</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phòng ban</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã NV</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Họ tên</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vai trò</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phòng ban</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
                     {users.slice((currentPage-1)*USERS_PER_PAGE, currentPage*USERS_PER_PAGE).map((user: any, idx: number) => (
-                      <tr key={idx} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.emp_code}</td>
-                        <td className="px-6 py-4 text-sm text-gray-900">{user.email}</td>
-                        <td className="px-6 py-4 text-sm text-gray-900">{user.full_name}</td>
+                    <tr key={idx} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.emp_code}</td>
+                      <td className="px-6 py-4 text-sm text-gray-900">{user.email}</td>
+                      <td className="px-6 py-4 text-sm text-gray-900">{user.full_name}</td>
                         <td className="px-6 py-4 text-sm text-gray-900 capitalize">{user.position}</td>
                         <td className="px-6 py-4 text-sm text-gray-900">{user.department_id || "N/A"}</td>
-                        <td className="px-6 py-4">
-                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                      <td className="px-6 py-4">
+                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                             ${user.status_account === "Đang sử dụng" ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                             {statuses[user.status_account as keyof typeof statuses] || user.status_account}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
                 {/* Pagination */}
                 {totalPages > 1 && (
                   <div className="flex justify-center items-center gap-4 mt-4">

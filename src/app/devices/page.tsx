@@ -1,68 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 
-// Dữ liệu mẫu
-const fakeDevices = [
-  {
-    id: 1,
-    asset_code: "LAP0012",
-    asset_name: "Laptop Dell XPS 13",
-    category_id: 1, // 1: Laptop
-    brand: "Dell",
-    os: "Windows 11 Pro",
-    office: "Microsoft Office 2021",
-    configuration: "Intel Core i7-1165G7, 16GB RAM, 512GB SSD",
-    model: "XPS 13 9310",
-    serial_number: "SN123456789",
-    mac_address: "00:1A:2B:3C:4D:5E",
-    mac_wifi: "00:1A:2B:3C:4D:5F",
-    hub: "HUB-01",
-    ip_address: "192.168.1.100",
-    vcs_lan_no: "VCS001",
-    start_use_date: "2023-01-15",
-    belongs_to_dept_id: 1, // 1: IT Department
-    vendor_id: 1, // 1: Dell Vietnam
-    location_id: 1, // 1: HCM Office
-    purchase_date: "2023-01-01",
-    purchase_price: 35000000,
-    warranty_expiry: "2026-01-01",
-    maintenance_cycle: "6 tháng",
-    status_id: 1, // 1: Đang sử dụng
-    upgrade_infor: "Nâng cấp RAM lên 32GB ngày 2023-06-15",
-    notes: "Thiết bị được cấp cho trưởng phòng IT"
-  },
-  {
-    id: 2,
-    asset_code: "PC002",
-    asset_name: "Máy tính để bàn Dell OptiPlex",
-    category_id: 2, // 2: Desktop
-    brand: "Dell",
-    os: "Windows 10 Pro",
-    office: "Microsoft Office 2019",
-    configuration: "Intel Core i5-10500, 8GB RAM, 256GB SSD",
-    model: "OptiPlex 3080",
-    serial_number: "SN987654321",
-    mac_address: "00:2B:3C:4D:5E:6F",
-    mac_wifi: "N/A",
-    hub: "HUB-02",
-    ip_address: "192.168.1.101",
-    vcs_lan_no: "VCS002",
-    start_use_date: "2023-02-01",
-    belongs_to_dept_id: 2, // 2: HR Department
-    vendor_id: 1, // 1: Dell Vietnam
-    location_id: 1, // 1: HCM Office
-    purchase_date: "2023-01-15",
-    purchase_price: 15000000,
-    warranty_expiry: "2026-01-15",
-    maintenance_cycle: "12 tháng",
-    status_id: 1, // 1: Đang sử dụng
-    upgrade_infor: "",
-    notes: "Máy tính văn phòng standard"
-  }
-];
+// Xóa fakeDevices, dùng API thật
 
 // Mapping cho các ID
 interface Mappings {
@@ -80,7 +22,8 @@ const categories: Mappings = {
 const departments: Mappings = {
   1: "IT Department",
   2: "HR Department",
-  3: "Finance Department"
+  3: "Finance Department",
+  4: "IT"
 };
 
 const statuses: Mappings = {
@@ -91,7 +34,21 @@ const statuses: Mappings = {
 };
 
 export default function DeviceListPage() {
-  const [devices, setDevices] = useState(fakeDevices);
+  const [devices, setDevices] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    setLoading(true);
+    fetch("http://localhost:5000/api/assets/all")
+      .then(res => {
+        if (!res.ok) throw new Error("Không thể lấy danh sách thiết bị");
+        return res.json();
+      })
+      .then(data => setDevices(data))
+      .catch(err => setError(err.message || "Lỗi không xác định"))
+      .finally(() => setLoading(false));
+  }, []);
 
   // Mock các hàm xử lý
   const handleEdit = (id: number) => {
@@ -167,8 +124,14 @@ export default function DeviceListPage() {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {devices.map((device) => (
-                      <tr key={device.id} className="hover:bg-gray-50">
+                    {loading ? (
+                      <tr><td colSpan={6} className="text-center py-8 text-blue-600 font-semibold">Đang tải danh sách thiết bị...</td></tr>
+                    ) : error ? (
+                      <tr><td colSpan={6} className="text-center py-8 text-red-600 font-semibold">{error}</td></tr>
+                    ) : devices.length === 0 ? (
+                      <tr><td colSpan={6} className="text-center py-8 text-gray-500 font-semibold">Không có thiết bị nào</td></tr>
+                    ) : devices.map((device) => (
+                      <tr key={device.asset_id || device.id} className="hover:bg-gray-50">
                         <td className="px-3 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {device.asset_code}
                         </td>
@@ -181,7 +144,7 @@ export default function DeviceListPage() {
                           <div className="text-sm text-gray-500">{device.os}</div>
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-500">
-                          {departments[device.belongs_to_dept_id]}
+                          {device.belongs_to_dept_id}
                         </td>
                         <td className="px-6 py-4">
                           <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
