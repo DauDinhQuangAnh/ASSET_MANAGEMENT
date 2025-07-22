@@ -86,6 +86,8 @@ const statuses = {
   inactive: "Ngừng sử dụng",
 };
 
+const USERS_PER_PAGE = 10;
+
 export default function UserManagementPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -119,6 +121,9 @@ export default function UserManagementPage() {
   });
   const [formError, setFormError] = useState('');
   const [formLoading, setFormLoading] = useState(false);
+  // Phân trang
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(users.length / USERS_PER_PAGE);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -159,6 +164,7 @@ export default function UserManagementPage() {
       filtered = filtered.filter((u: any) => (statuses[u.status_account as keyof typeof statuses] || u.status_account) === filterStatus);
     }
     setUsers(filtered);
+    setCurrentPage(1); 
   }, [search, filterDept, filterStatus, allUsers, filterBU]);
 
   // Lấy danh sách phòng ban theo BU filter
@@ -422,35 +428,57 @@ export default function UserManagementPage() {
               {loading ? (
                 <div className="text-center py-8 text-blue-600 font-semibold">Đang tải danh sách người dùng...</div>
               ) : (
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã NV</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Họ tên</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vai trò</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phòng ban</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {users.map((user: any, idx: number) => (
-                    <tr key={idx} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.emp_code}</td>
-                      <td className="px-6 py-4 text-sm text-gray-900">{user.email}</td>
-                      <td className="px-6 py-4 text-sm text-gray-900">{user.full_name}</td>
-                      <td className="px-6 py-4 text-sm text-gray-900 capitalize">{user.position}</td>
-                      <td className="px-6 py-4 text-sm text-gray-900">{user.department_id || "N/A"}</td>
-                      <td className="px-6 py-4">
-                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                          ${user.status_account === "Đang sử dụng" ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                          {statuses[user.status_account as keyof typeof statuses] || user.status_account}
-                        </span>
-                      </td>
+              <>
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã NV</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Họ tên</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vai trò</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phòng ban</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {users.slice((currentPage-1)*USERS_PER_PAGE, currentPage*USERS_PER_PAGE).map((user: any, idx: number) => (
+                      <tr key={idx} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.emp_code}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{user.email}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{user.full_name}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900 capitalize">{user.position}</td>
+                        <td className="px-6 py-4 text-sm text-gray-900">{user.department_id || "N/A"}</td>
+                        <td className="px-6 py-4">
+                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                            ${user.status_account === "Đang sử dụng" ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                            {statuses[user.status_account as keyof typeof statuses] || user.status_account}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="flex justify-center items-center gap-4 mt-4">
+                    <button
+                      className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold disabled:opacity-50"
+                      onClick={() => setCurrentPage(p => Math.max(1, p-1))}
+                      disabled={currentPage === 1}
+                    >
+                      Previous
+                    </button>
+                    <span className="font-semibold">Trang {currentPage} / {totalPages}</span>
+                    <button
+                      className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold disabled:opacity-50"
+                      onClick={() => setCurrentPage(p => Math.min(totalPages, p+1))}
+                      disabled={currentPage === totalPages}
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
+              </>
               )}
             </div>
           </div>
