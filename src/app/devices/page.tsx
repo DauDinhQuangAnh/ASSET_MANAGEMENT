@@ -128,7 +128,7 @@ export default function DeviceListPage() {
 
         {/* Main content */}
         <main className="flex-1 bg-gray-100 p-6">
-          <div className="w-4/5 mx-auto">
+          <div className="mx-[0%]">
             {/* Filters */}
             <div className="bg-white p-4 rounded-lg shadow mb-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

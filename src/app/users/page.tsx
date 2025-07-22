@@ -43,7 +43,7 @@ export default function UserManagementPage() {
       <div className="flex-1 flex flex-col">
         <Header title="Quản lý người dùng" description="Danh sách và thao tác người dùng hệ thống" showAddButton={false} />
         <main className="flex-1 bg-gray-100 p-6">
-          <div className="w-4/5 mx-auto">
+          <div className="mx-[0%]">
             {/* Filters */}
             <div className="bg-white p-4 rounded-lg shadow mb-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
