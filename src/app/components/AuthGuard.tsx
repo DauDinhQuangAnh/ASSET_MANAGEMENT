@@ -34,8 +34,11 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   }, [pathname, router]);
 
   if (isChecking) {
-    // Có thể thay bằng spinner hoặc giao diện loading tuỳ ý
-    return <div>Đang kiểm tra xác thực...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
   }
 
   return <>{children}</>;

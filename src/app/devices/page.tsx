@@ -158,26 +158,25 @@ export default function DeviceListPage() {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã TS</th>
+                      <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mã TS</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tên thiết bị</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cấu hình</th>
+                      <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cấu hình</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phòng ban</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thông tin bảo hành</th>
                       <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Thao tác</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {devices.map((device) => (
                       <tr key={device.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td className="px-3 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {device.asset_code}
                         </td>
                         <td className="px-6 py-4">
                           <div className="text-sm font-medium text-gray-900">{device.asset_name}</div>
                           <div className="text-sm text-gray-500">{device.brand} - {device.model}</div>
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-3 py-4">
                           <div className="text-sm text-gray-900">{device.configuration}</div>
                           <div className="text-sm text-gray-500">{device.os}</div>
                         </td>
@@ -191,10 +190,6 @@ export default function DeviceListPage() {
                               'bg-red-100 text-red-800'}`}>
                             {statuses[device.status_id]}
                           </span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="text-sm text-gray-900">HSD: {device.warranty_expiry}</div>
-                          <div className="text-sm text-gray-500">Chu kỳ BT: {device.maintenance_cycle}</div>
                         </td>
                         <td className="px-6 py-4 text-right text-sm font-medium">
                           <button
